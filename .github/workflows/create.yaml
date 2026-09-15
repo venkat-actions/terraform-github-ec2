@@ -37,9 +37,9 @@ jobs:
           aws-region: us-east-1
       - name: terraform init
         run: terraform init --reconfigure
-        
+
       - name: Terraform Format Check
-        run: terraform fmt -check
+        run: terraform fmt -recursive
       # - name: run plan
       #   run: terraform plan
       # - name: Configure AWS Credentials 
