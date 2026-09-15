@@ -1,0 +1,40 @@
+name: Provisioning Ec2
+on:
+  workflow_dispatch:
+    inputs:
+      actions:
+        type: choice 
+        required: true
+        options:
+          - apply
+          - destroy 
+        default: apply
+jobs:
+  terraform:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: checkout code 
+        uses: actions/checkout@v6
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: terraform initializing
+        run: terraform init --reconfigure
+      - name: formatting 
+        run: terraform fmt 
+
+      - name: plan the terraform
+        if: inputs.actions == 'apply'
+        run: terraform plan 
+      - name: create the resource 
+        if: inputs.actions == 'apply'
+        run: terraform apply -auto-approve 
+      - name: destroy the resources 
+        if: inputs.actions == 'destroy'
+        run: terraform destroy -auto-approve
+      
