@@ -1,0 +1,12 @@
+name: Ec2 Creation
+on: [push]
+jobs:
+  terraform:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: checkout code 
+        uses: actions/checkout@v6
+      - name: terraform setup 
+        uses: hashicorp/setup-terraform@v4
+      - name: terraform init
+        run: terraform init
