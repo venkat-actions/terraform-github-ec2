@@ -11,19 +11,19 @@ on:
           - apply 
           - destroy 
         default: apply 
-      environment:
-        description: "Select Environment"
-        required: true 
-        type: choice 
-        options:
-          - DEV 
-          - PROD 
+      # environment:
+      #   description: "Select Environment"
+      #   required: true 
+      #   type: choice 
+      #   options:
+      #     - DEV 
+      #     - PROD 
 jobs:
   terraform:
-    name: Terraform ${{ inputs.action }} - ${{ inputs.environment }}
+    # name: Terraform ${{ inputs.action }} - ${{ inputs.environment }}
     runs-on: ubuntu-latest
 
-    environment: ${{ inputs.environment }}
+    # environment: ${{ inputs.environment }}
     steps:
       - name: checkout code 
         uses: actions/checkout@v6
