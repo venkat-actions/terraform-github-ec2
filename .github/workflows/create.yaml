@@ -45,7 +45,7 @@ jobs:
         run: terraform plan
 
       - name: Create infra
-        if: inputs.action= 'apply'
+        if: inputs.action == 'apply'
         run: terraform apply -auto-approve
       - name: Delete the infra
         if: inputs.action == 'destroy'
