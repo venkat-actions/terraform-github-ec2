@@ -5,6 +5,13 @@ terraform{
             version= "~> 6.0"
         }
     }
+    backend "s3"{
+        bucket= "kanakam-remote-state-devv"
+        key= "github"
+        region= "us-east-1"
+        encrypt= true 
+        use_lockfile= true
+    }
 }
 provider "aws"{
     region= "us-east-1"
