@@ -30,7 +30,7 @@ jobs:
       - name: terraform setup 
         uses: hashicorp/setup-terraform@v4
       - name: terraform init
-        run: terraform init
+        run: terraform init --reconfigure
       # - name: run plan
       #   run: terraform plan
       - name: Configure AWS Credentials 
