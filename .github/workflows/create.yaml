@@ -1,8 +1,29 @@
 name: Ec2 Creation
-on: [push]
+# on: [push]
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "select appropriate action"
+        required: true 
+        type: choice 
+        options:
+          - apply 
+          - destroy 
+        default: apply 
+      environment:
+        description: "Select Environment"
+        required: true 
+        type: choice 
+        options:
+          - DEV 
+          - PROD 
 jobs:
   terraform:
-    runs-on: ubuntu-latest 
+    name: Terraform ${{ inputs.action }} - ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.environment }}
     steps:
       - name: checkout code 
         uses: actions/checkout@v6
@@ -18,5 +39,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+
       - name: run plan
+        if: inputs.action == 'apply'
         run: terraform plan
+
+      - name: Create infra
+        if: inputs.action= 'apply'
+        run: terraform apply -auto-approve
+      - name: Delete the infra
+        if: inputs.action == 'destroy'
+        run: terraform destroy -auto-approve
