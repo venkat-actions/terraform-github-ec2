@@ -29,16 +29,25 @@ jobs:
         uses: actions/checkout@v6
       - name: terraform setup 
         uses: hashicorp/setup-terraform@v4
-      - name: terraform init
-        run: terraform init --reconfigure
-      # - name: run plan
-      #   run: terraform plan
       - name: Configure AWS Credentials 
         uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+      - name: terraform init
+        run: terraform init --reconfigure
+        
+      - name: Terraform Format Check
+        run: terraform fmt -check
+      # - name: run plan
+      #   run: terraform plan
+      # - name: Configure AWS Credentials 
+      #   uses: aws-actions/configure-aws-credentials@v5
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-east-1
 
       - name: run plan
         if: inputs.action == 'apply'
